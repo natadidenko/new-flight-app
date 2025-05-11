@@ -1,0 +1,31 @@
+name: Run Postman Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-postman-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install Postman CLI
+        run: npm install -g @postman/cli
+
+      - name: Log in to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+
+      - name: Run Postman collection
+        run: postman collection run <43854107-703533c4-cd0b-4ee8-ba83-c8fa49737862> -e <43854107-90f4f4d4-a553-414b-a123-2c2914c39e31>
